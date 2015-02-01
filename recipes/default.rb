@@ -26,7 +26,9 @@ users = data_bag('users')
 ssh_keys = ''
 users.each do |username|
   user = data_bag_item('users', username)
-  ssh_keys << user['ssh_keys'] + "\n"
+  Array(user['ssh_keys']).each do |ssh_key|
+    ssh_keys << ssh_key + "\n"
+  end
 end
 
 file "/home/git/.ssh/authorized_keys" do
